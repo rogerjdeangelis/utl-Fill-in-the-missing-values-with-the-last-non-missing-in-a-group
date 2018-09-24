@@ -1,5 +1,8 @@
 Fill in the missing values with the last non missing in a group
 
+See a nice simplification on end by
+"Keintz, Mark" <mkeintz@WHARTON.UPENN.EDU>
+
 see
 https://tinyurl.com/y8f87bo2
 https://github.com/rogerjdeangelis/utl-import-excel-workbooks-in-all-folders-and-subfolders
@@ -98,6 +101,33 @@ cards4;
 4 4 OOOOO
 ;;;;
 run;quit;
+
+
+    
+ 
+*__  __            _
+|  \/  | __ _ _ __| | __
+| |\/| |/ _` | '__| |/ /
+| |  | | (_| | |  |   <
+|_|  |_|\__,_|_|  |_|\_\
+
+;
+
+
+I think self-interleaving via SET can often be just as effective, and less busy, than double DOW:
+
+data want;
+  set have (keep=id ticker_have in=in1 where=(not(missing(ticker_have))))
+      have (in=in2);
+  by id;
+  if in1 and not(missing(ticker_have)) then ticker_want=ticker_have;
+  retain ticker_want;
+  if first.id and not(in1) then call missing(ticker_want);
+  if in2;
+run;
+
+
+
 
 
 
